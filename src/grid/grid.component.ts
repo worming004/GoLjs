@@ -25,7 +25,7 @@ function doubleArrayToPositions(arr: any[][]) {
     styles: ['br { display: block; height: 1px;}']
 })
 export class GridComponent {
-    speedMs: number = 2000;
+    speedMs: number = 500;
     grid: Grid
 
     constructor() {

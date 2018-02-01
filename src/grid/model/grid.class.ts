@@ -36,6 +36,14 @@ export class Grid {
             cell.setStateFromPreviousComputing();
         })
     }
+    
+    private setNeighborsForEachCells() {
+        for (let i = 0; i < this.cells.length; i++) {
+            for (let j = 0; j < this.cells[i].length; j++) {
+                this.setNeighborsForCell({ x: i, y: j }, this.cells[i][j]);
+            }
+        }
+    }
 
     private getCellsOnlyToCheckForNextTurn() {
         // only alive cells and it's neighbors are to check.
@@ -53,14 +61,6 @@ export class Grid {
             }
             );
         return result;
-    }
-
-    private setNeighborsForEachCells() {
-        for (let i = 0; i < this.cells.length; i++) {
-            for (let j = 0; j < this.cells[i].length; j++) {
-                this.setNeighborsForCell({ x: i, y: j }, this.cells[i][j]);
-            }
-        }
     }
 
     private setNeighborsForCell(position: { x: number, y: number }, cell) {
