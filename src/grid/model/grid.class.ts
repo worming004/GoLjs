@@ -23,12 +23,11 @@ export class Grid {
     }
 
     setNextTurn(): void {
-        let cellsToCheck: Cell[] = this.getCellsOnlyToCheck();
+        let cellsToCheck: Cell[] = this.getCellsOnlyToCheckForNextTurn();
 
-        const onlyUnique = function (value, index, self) {
+        cellsToCheck = cellsToCheck.filter((value, index, self) => {
             return self.indexOf(value) === index;
-        }
-        cellsToCheck = cellsToCheck.filter(onlyUnique);
+        });
 
         cellsToCheck.forEach(cell => {
             cell.setStateForNextTurn();
@@ -38,12 +37,21 @@ export class Grid {
         })
     }
 
-    private getCellsOnlyToCheck() {
+    private getCellsOnlyToCheckForNextTurn() {
+        // only alive cells and it's neighbors are to check.
+        // dead cell with only dead neighbors will nevet get a state change
         let result = [];
-        this.flatCells.filter(cell => { return cell.isAlive }).forEach(element => {
-            result.push(element);
-            result = result.concat(element.neighborsCells);
-        });
+        this.flatCells
+            .filter(cell => { return cell.isAlive })
+            .forEach(element => {
+                const cellsFound = [element, ...element.neighborsCells]
+                cellsFound.forEach(cell => {
+                    if (result.indexOf(cell) === -1) {
+                        result.push(cell);
+                    }
+                });
+            }
+            );
         return result;
     }
 

@@ -2,10 +2,18 @@ import { Component } from '@angular/core';
 import { Grid } from 'grid/model/grid.class';
 
 const initialPositions = [
-    {x: 5, y:4 },
-    {x: 5, y:5 },
-    {x: 5, y:6 }
+    [5,4],
+    [5,5],
+    [5,6]
 ]
+
+function doubleArrayToPositions(arr: any[][]) {
+    const result: { x: number, y: number }[] = [];
+    arr.forEach(position => {
+        result.push({x: position[0], y: position[1]});
+    });
+    return result;
+}
 
 @Component({
     selector: 'app-grid',
@@ -22,7 +30,7 @@ export class GridComponent {
 
     constructor() {
         this.grid = new Grid(50, 50);
-        this.grid.initialise(initialPositions);
+        this.grid.initialise(doubleArrayToPositions(initialPositions));
 
         setInterval(() => {
             this.grid.setNextTurn();

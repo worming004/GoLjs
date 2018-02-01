@@ -16,15 +16,7 @@ export class Cell {
     }
 
     private willBeAliveNextTurn(): boolean {
-        // debugger;
         const activeNeighborsCount = this.neighborsCells.filter(element => { return element.isAlive }).length;
-        if(this.neighborsCells.length > 3){
-            debugger;
-        }
-        if(activeNeighborsCount > 0)
-        {
-            // debugger;
-        }
         if ((this.isAlive && activeNeighborsCount === 2) || activeNeighborsCount === 3) {
             return true;
         }
