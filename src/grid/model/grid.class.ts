@@ -1,6 +1,8 @@
 import { Cell } from './cell.class';
+import { GPosition } from 'grid/model/position.type';
 
 export class Grid {
+    private isRunning: boolean = false;
     public cells: Cell[][] = [];
     private flatCells: Cell[] = [];
 
@@ -16,27 +18,34 @@ export class Grid {
         this.setNeighborsForEachCells();
     }
 
-    initialise(positions: { x: number, y: number }[]) {
+    initialise(positions: GPosition[]) {
         positions.forEach(position => {
             this.getCellByPosition(position.x, position.y).isAlive = true;
         });
     }
 
     setNextTurn(): void {
-        let cellsToCheck: Cell[] = this.getCellsOnlyToCheckForNextTurn();
+        if (!this.isRunning) {
+            this.isRunning = true;
 
-        cellsToCheck = cellsToCheck.filter((value, index, self) => {
-            return self.indexOf(value) === index;
-        });
+            let cellsToCheck: Cell[] = this.getCellsOnlyToCheckForNextTurn();
 
-        cellsToCheck.forEach(cell => {
-            cell.setStateForNextTurn();
-        });
-        this.flatCells.forEach(cell => {
-            cell.setStateFromPreviousComputing();
-        })
+            cellsToCheck = cellsToCheck.filter((value, index, self) => {
+                return self.indexOf(value) === index;
+            });
+
+            cellsToCheck.forEach(cell => {
+                cell.setStateForNextTurn();
+            });
+            this.flatCells.forEach(cell => {
+                cell.setStateFromPreviousComputing();
+            })
+            this.isRunning = false;
+        } else {
+            console.log('miss turn!');
+        }
     }
-    
+
     private setNeighborsForEachCells() {
         for (let i = 0; i < this.cells.length; i++) {
             for (let j = 0; j < this.cells[i].length; j++) {

@@ -1,3 +1,5 @@
+import { RandomPositionsProvider } from './model/random-positions-provider.class';
+import { MaxInterfaceComponent } from 'grid/max-interface/max-interface.component';
 import { CellComponent } from './cell.component';
 import { GridComponent } from './grid.component';
 import { NgModule } from '@angular/core';
@@ -8,9 +10,10 @@ import { RangeToArrayPipe } from 'grid/range-to-array.pipe';
   imports: [
     CommonModule
   ],
-  exports: [GridComponent, CellComponent],
+  exports: [MaxInterfaceComponent],
   declarations: [
-    RangeToArrayPipe, GridComponent, CellComponent
-  ]
+    RangeToArrayPipe, GridComponent, CellComponent, MaxInterfaceComponent
+  ],
+  providers: [RandomPositionsProvider]
 })
 export class GridModule { }

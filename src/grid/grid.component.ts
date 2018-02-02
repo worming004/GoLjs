@@ -1,19 +1,13 @@
+import { GPosition } from './model/position.type';
 import { Component } from '@angular/core';
 import { Grid } from 'grid/model/grid.class';
+import { RandomPositionsProvider } from 'grid/model/random-positions-provider.class';
 
 const initialPositions = [
-    [5,4],
-    [5,5],
-    [5,6]
+    [5, 4],
+    [5, 5],
+    [5, 6]
 ]
-
-function doubleArrayToPositions(arr: any[][]) {
-    const result: { x: number, y: number }[] = [];
-    arr.forEach(position => {
-        result.push({x: position[0], y: position[1]});
-    });
-    return result;
-}
 
 @Component({
     selector: 'app-grid',
@@ -25,17 +19,29 @@ function doubleArrayToPositions(arr: any[][]) {
     styles: ['br { display: block; height: 1px;}']
 })
 export class GridComponent {
-    speedMs: number = 500;
+    private x = 80;
+    private y = 80;
+    private density = 1/6;
+    intervalMs = 1;
     grid: Grid
 
-    constructor() {
-        this.grid = new Grid(50, 50);
-        this.grid.initialise(doubleArrayToPositions(initialPositions));
+    constructor(private randomInit: RandomPositionsProvider) {
+        this.grid = new Grid(this.x, this.y);
+        this.randomInit.initialize(this.x, this.y, this.density);
+        this.grid.initialise(this.randomInit.getRandomPositions());
 
         setInterval(() => {
             this.grid.setNextTurn();
-        }, this.speedMs)
+        }, this.intervalMs)
     }
 
 
 }
+
+// function doubleArrayToPositions(arr: any[][]): GPosition[] {
+//     const result: GPosition[] = [];
+//     arr.forEach(position => {
+//         result.push(new GPosition(position[0], position[1]));
+//     });
+//     return result;
+// }
