@@ -3,14 +3,16 @@ export class Cell {
     public isAlive: boolean = false;
     private isAliveNextTurn: boolean = null;
 
-    setStateForNextTurn() {
-        if (this.isAliveNextTurn == null)
+    async setStateForNextTurn() {
+        if (this.isAliveNextTurn == null) {
             this.isAliveNextTurn = this.willBeAliveNextTurn();
+        }
     }
 
     setStateFromPreviousComputing() {
-        if (this.isAliveNextTurn === undefined)
+        if (this.isAliveNextTurn === undefined) {
             throw new Error('is alive next turn not setted');
+        }
         this.isAlive = this.isAliveNextTurn;
         this.isAliveNextTurn = null;
     }

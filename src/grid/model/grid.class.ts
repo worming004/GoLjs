@@ -1,5 +1,6 @@
 import { Cell } from './cell.class';
 import { GPosition } from 'grid/model/position.type';
+import { resolve } from 'url';
 
 export class Grid {
     private isRunning: boolean = false;
@@ -26,21 +27,30 @@ export class Grid {
 
     setNextTurn(): void {
         if (!this.isRunning) {
+            // const time = new Date();
             this.isRunning = true;
 
-            let cellsToCheck: Cell[] = this.getCellsOnlyToCheckForNextTurn();
-
-            cellsToCheck = cellsToCheck.filter((value, index, self) => {
-                return self.indexOf(value) === index;
-            });
-
+            const cellsToCheck: Cell[] = this.getCellsOnlyToCheckForNextTurn();
+            const allSetProm = [];
             cellsToCheck.forEach(cell => {
-                cell.setStateForNextTurn();
+                allSetProm.push(new Promise((res) => {
+                    cell.setStateForNextTurn();
+                    res();
+                }));
             });
-            this.flatCells.forEach(cell => {
-                cell.setStateFromPreviousComputing();
-            })
-            this.isRunning = false;
+            Promise.all(allSetProm).then(() => {
+                const allNewSetProm = [];
+                this.flatCells.forEach(cell => {
+                    allNewSetProm.push(new Promise((res) => {
+                        cell.setStateFromPreviousComputing();
+                        res();
+                    }));
+                });
+                Promise.all(allNewSetProm).then(() => {
+                    this.isRunning = false;
+                    // console.log(new Date().valueOf() - time.valueOf());
+                });
+            });
         } else {
             console.log('miss turn!');
         }
@@ -49,7 +59,7 @@ export class Grid {
     private setNeighborsForEachCells() {
         for (let i = 0; i < this.cells.length; i++) {
             for (let j = 0; j < this.cells[i].length; j++) {
-                this.setNeighborsForCell({ x: i, y: j }, this.cells[i][j]);
+                new Promise(() => { this.setNeighborsForCell({ x: i, y: j }, this.cells[i][j]); });
             }
         }
     }
@@ -58,15 +68,16 @@ export class Grid {
         // only alive cells and it's neighbors are to check.
         // dead cell with only dead neighbors will nevet get a state change
         let result = [];
+        const allProcess = [];
         this.flatCells
-            .filter(cell => { return cell.isAlive })
+            .filter(cell => cell.isAlive)
             .forEach(element => {
-                const cellsFound = [element, ...element.neighborsCells]
-                cellsFound.forEach(cell => {
-                    if (result.indexOf(cell) === -1) {
-                        result.push(cell);
-                    }
-                });
+                const cellsFound = [element, ...element.neighborsCells];
+                result = result.concat(
+                    cellsFound.filter(cell =>
+                        !result.includes(cell)
+                    )
+                );
             }
             );
         return result;
@@ -76,8 +87,9 @@ export class Grid {
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 const cellFound = this.getCellByPosition(i + position.x, j + position.y);
-                if (cellFound && !(i === 0 && j === 0))
+                if (cellFound && !(i === 0 && j === 0)) {
                     cell.neighborsCells.push(cellFound);
+                }
             }
         }
     }

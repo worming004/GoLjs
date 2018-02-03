@@ -21,19 +21,24 @@ export class RandomPositionsProvider {
     }
 
     getRandomPositions(): GPosition[] {
-        const result: GPosition[] = [];
+        const result: { gpos: GPosition, stringifyGPos: string }[] = [];
         const countOfCellToGenerate = ((this.maxX + 1) * (this.maxY + 1)) * this.density;
         console.log('count to generate: ' + countOfCellToGenerate);
         for (let i = 0; i < countOfCellToGenerate; i++) {
-            let newPosition = this.getARandomPosition();
-            while (result.filter((pos) => 
-                JSON.stringify(pos) === JSON.stringify(newPosition)
+            let newPosition = this.getARandomPositionWithStringify();
+            while (result.filter((pos) =>
+                pos.stringifyGPos === newPosition.stringifyGPos
             ).length > 0) {
-                newPosition = this.getARandomPosition();
+                newPosition = this.getARandomPositionWithStringify();
             }
             result.push(newPosition);
         }
-        return result;
+        return result.map(arr => arr.gpos);
+    }
+
+    getARandomPositionWithStringify() {
+        const pos = this.getARandomPosition();
+        return { gpos: pos, stringifyGPos: JSON.stringify(pos) };
     }
 
     getARandomPosition(): GPosition {

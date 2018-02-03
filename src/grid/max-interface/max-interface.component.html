@@ -1,7 +1,11 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <app-grid></app-grid>
+            <app-grid #grid></app-grid>
+        </div>
+        <div class="col-sm">
+            <button (click)="grid.runApp()">start</button>
+            <button (click)="grid.stopApp()">stop</button>
         </div>
     </div>
 </div>
