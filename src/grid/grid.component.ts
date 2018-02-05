@@ -1,5 +1,5 @@
 import { GPosition } from './model/position.type';
-import { Component } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { Grid } from 'grid/model/grid.class';
 import { RandomPositionsProvider } from 'grid/model/random-positions-provider.class';
 import { Subject } from 'rxjs/Subject';
@@ -19,21 +19,41 @@ const initialPositions = [
                 </tr>`,
     styles: ['br { display: block; height: 1px;}']
 })
-export class GridComponent {
+export class GridComponent implements AfterViewInit {
     private x = 80;
     private y = 80;
     private density = 1 / 6;
+    private intervalMs = 50;
+    private initializer;
+
+    @Input() gridInitializer$;
 
     private interv;
-    intervalMs = 50;
     grid: Grid;
 
-    constructor(private randomInit: RandomPositionsProvider) {
-        this.grid = new Grid(this.x, this.y);
-        this.randomInit.initialize(this.x, this.y, this.density);
-        this.grid.initialise(this.randomInit.getRandomPositions());
+    ngAfterViewInit(): void {
+        if (this.gridInitializer$) {
+            this.gridInitializer$.subscribe(initializer => {
+                debugger;
+                this.init(initializer);
+            });
 
-        this.runApp();
+            this.runApp();
+        }
+    }
+
+    init(initializer: any) {
+        for (const prop in initializer) {
+            if (initializer.hasOwnProperty(prop) && this.hasOwnProperty(prop)) {
+                this[prop] = initializer[prop];
+            }
+        }
+
+        this.grid = new Grid(this.x, this.y);
+        if (this.initializer) {
+            this.initializer.initialize(this.x, this.y, this.density);
+            this.grid.initialise(this.initializer.getPositions());
+        }
     }
 
     stopApp() {

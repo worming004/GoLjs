@@ -1,11 +1,12 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <app-grid #grid></app-grid>
+            <app-grid #grid [gridInitializer$]="gridInitializer$"></app-grid>
         </div>
         <div class="col-sm">
             <button (click)="grid.runApp()">start</button>
             <button (click)="grid.stopApp()">stop</button>
+            <button *ngFor="let provider of patternProviders" (click)="selectPattern(provider)">pattern</button>
         </div>
     </div>
 </div>

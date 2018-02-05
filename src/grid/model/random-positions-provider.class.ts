@@ -1,8 +1,9 @@
+import { IPositionProvider } from './i-position-provider.interface';
 import { GPosition } from 'grid/model/position.type';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class RandomPositionsProvider {
+export class RandomPositionsProvider implements IPositionProvider {
     private maxX: number;
     private maxY: number;
     private density: number;
@@ -20,7 +21,7 @@ export class RandomPositionsProvider {
         console.log('density: ' + this.density);
     }
 
-    getRandomPositions(): GPosition[] {
+    getPositions(): GPosition[] {
         const result: { gpos: GPosition, stringifyGPos: string }[] = [];
         const countOfCellToGenerate = ((this.maxX + 1) * (this.maxY + 1)) * this.density;
         console.log('count to generate: ' + countOfCellToGenerate);
