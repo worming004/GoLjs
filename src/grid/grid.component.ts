@@ -12,11 +12,13 @@ const initialPositions = [
 
 @Component({
     selector: 'app-grid',
-    template: `<tr *ngFor="let cellRow of grid.cells">
-                    <td *ngFor="let cell of cellRow">
-                            <app-cell [cell]="cell"></app-cell>
-                    </td>
-                </tr>`,
+    template: `<div *ngIf="grid">
+                    <tr *ngFor="let cellRow of grid.cells">
+                        <td *ngFor="let cell of cellRow">
+                                <app-cell [cell]="cell"></app-cell>
+                        </td>
+                    </tr>
+                </div>`,
     styles: ['br { display: block; height: 1px;}']
 })
 export class GridComponent implements AfterViewInit {
@@ -24,17 +26,15 @@ export class GridComponent implements AfterViewInit {
     private y = 80;
     private density = 1 / 6;
     private intervalMs = 50;
-    private initializer;
 
-    @Input() gridInitializer$;
+    @Input() gridInitializer;
 
     private interv;
     grid: Grid;
 
     ngAfterViewInit(): void {
-        if (this.gridInitializer$) {
-            this.gridInitializer$.subscribe(initializer => {
-                debugger;
+        if (this.gridInitializer) {
+            this.gridInitializer.subscribe(initializer => {
                 this.init(initializer);
             });
 
@@ -50,9 +50,9 @@ export class GridComponent implements AfterViewInit {
         }
 
         this.grid = new Grid(this.x, this.y);
-        if (this.initializer) {
-            this.initializer.initialize(this.x, this.y, this.density);
-            this.grid.initialise(this.initializer.getPositions());
+        if (initializer) {
+            initializer.initialize(this.x, this.y, this.density);
+            this.grid.initialise(initializer.getPositions());
         }
     }
 
