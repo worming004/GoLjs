@@ -1,6 +1,9 @@
 import { GPosition } from '../position.type';
 import { IPositionProvider } from './i-position-provider.interface';
 export class GliderProvider implements IPositionProvider {
+    get Title() {
+        return 'Glider';
+    }
     initialize(numberOfRow: number, numberOfColumn: number, density?: number) { }
     getPositions(): GPosition[] {
         return [

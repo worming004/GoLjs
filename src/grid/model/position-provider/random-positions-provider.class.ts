@@ -8,6 +8,10 @@ export class RandomPositionsProvider implements IPositionProvider {
     private maxY: number;
     private density: number;
 
+    get Title() {
+        return 'RandomPosition';
+    }
+
     constructor() {
     }
 
