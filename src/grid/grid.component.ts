@@ -1,3 +1,4 @@
+import { IPositionProvider } from './model/position-provider/i-position-provider.interface';
 import { GPosition } from './model/position.type';
 import { Component, Input, AfterViewInit } from '@angular/core';
 import { Grid } from 'grid/model/grid.class';
@@ -22,9 +23,6 @@ const initialPositions = [
     styles: ['br { display: block; height: 1px;}']
 })
 export class GridComponent implements AfterViewInit {
-    private x = 80;
-    private y = 80;
-    private density = 1 / 6;
     private intervalMs = 50;
 
     @Input() gridInitializer;
@@ -42,17 +40,15 @@ export class GridComponent implements AfterViewInit {
         }
     }
 
-    init(initializer: any) {
+    init(initializer: IPositionProvider) {
         for (const prop in initializer) {
             if (initializer.hasOwnProperty(prop) && this.hasOwnProperty(prop)) {
                 this[prop] = initializer[prop];
             }
         }
 
-        this.grid = new Grid(this.x, this.y);
         if (initializer) {
-            initializer.initialize(this.x, this.y, this.density);
-            this.grid.initialise(initializer.getPositions());
+            this.grid = initializer.createGrid();
         }
     }
 

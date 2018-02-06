@@ -1,6 +1,6 @@
+import { Grid } from './../grid.class';
 import { GPosition } from '../position.type';
 export interface IPositionProvider {
     Title: string;
-    initialize(numberOfRow: number, numberOfColumn: number, density?: number);
-    getPositions(): GPosition[];
+    createGrid(): Grid;
 }

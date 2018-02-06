@@ -1,5 +1,5 @@
+import { GPosition } from './position.type';
 import { Cell } from './cell.class';
-import { GPosition } from 'grid/model/position.type';
 import { resolve } from 'url';
 
 export class Grid {
@@ -7,7 +7,7 @@ export class Grid {
     public cells: Cell[][] = [];
     private flatCells: Cell[] = [];
 
-    constructor(numberOfRows: number, numberOfColumns: number) {
+    constructor(numberOfRows: number, numberOfColumns: number, positions?: GPosition[]) {
         for (let i = 0; i < numberOfRows; i++) {
             this.cells.push([])
             for (let j = 0; j < numberOfColumns; j++) {
@@ -15,6 +15,9 @@ export class Grid {
                 this.cells[i].push(cell);
                 this.flatCells.push(cell);
             }
+        }
+        if (positions) {
+            this.initialise(positions);
         }
         this.setNeighborsForEachCells();
     }
@@ -96,9 +99,10 @@ export class Grid {
 
     private getCellByPosition(x: number, y: number): Cell {
         try {
-            if (x >= 0 && x < this.cells.length && y >= 0 && y < this.cells[x].length)
+            if (x >= 0 && x < this.cells.length && y >= 0 && y < this.cells[x].length) {
                 return this.cells[x][y];
-            return null;
+            }
+            throw new Error('cell not found');
         } catch (error) {
             console.log('error at x:${x} y:${y}');
         }

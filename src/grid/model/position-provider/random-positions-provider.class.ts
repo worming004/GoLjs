@@ -1,6 +1,7 @@
 import { IPositionProvider } from './i-position-provider.interface';
 import { GPosition } from 'grid/model/position.type';
 import { Injectable } from '@angular/core';
+import { Grid } from 'grid/model/grid.class';
 
 @Injectable()
 export class RandomPositionsProvider implements IPositionProvider {
@@ -13,21 +14,19 @@ export class RandomPositionsProvider implements IPositionProvider {
     }
 
     constructor() {
+        this.maxX = 80;
+        this.maxY = 80;
+        this.density = 1 / 6;
     }
 
-    initialize(numberOfRow: number, numberOfColumn: number, density?: number) {
-        this.maxX = numberOfRow - 1;
-        this.maxY = numberOfColumn - 1;
-        if (!density) {
-            density = 1 / 10;
-        }
-        this.density = density;
-        console.log('density: ' + this.density);
+    createGrid(): Grid {
+        const g = new Grid(this.maxX, this.maxY, this.getPositions());
+        return g;
     }
 
     getPositions(): GPosition[] {
         const result: { gpos: GPosition, stringifyGPos: string }[] = [];
-        const countOfCellToGenerate = ((this.maxX + 1) * (this.maxY + 1)) * this.density;
+        const countOfCellToGenerate = this.maxX * this.maxY * this.density;
         console.log('count to generate: ' + countOfCellToGenerate);
         for (let i = 0; i < countOfCellToGenerate; i++) {
             let newPosition = this.getARandomPositionWithStringify();
@@ -48,8 +47,8 @@ export class RandomPositionsProvider implements IPositionProvider {
 
     getARandomPosition(): GPosition {
         return new GPosition(
-            Math.floor(Math.random() * this.maxX + 1),
-            Math.floor(Math.random() * this.maxY + 1)
+            Math.floor(Math.random() * this.maxX),
+            Math.floor(Math.random() * this.maxY)
         );
     }
 }
