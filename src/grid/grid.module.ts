@@ -1,5 +1,5 @@
-import { GliderProvider } from './model/glider-provider.class';
-import { RandomPositionsProvider } from './model/random-positions-provider.class';
+import { GliderProvider } from './model/position-provider/glider-provider.class';
+import { RandomPositionsProvider } from './model/position-provider/random-positions-provider.class';
 import { MaxInterfaceComponent } from 'grid/max-interface/max-interface.component';
 import { CellComponent } from './cell.component';
 import { GridComponent } from './grid.component';

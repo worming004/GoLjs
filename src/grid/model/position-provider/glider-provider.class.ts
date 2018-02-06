@@ -1,4 +1,4 @@
-import { GPosition } from './position.type';
+import { GPosition } from '../position.type';
 import { IPositionProvider } from './i-position-provider.interface';
 export class GliderProvider implements IPositionProvider {
     initialize(numberOfRow: number, numberOfColumn: number, density?: number) { }

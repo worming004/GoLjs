@@ -1,7 +1,7 @@
 import { GPosition } from './model/position.type';
 import { Component, Input, AfterViewInit } from '@angular/core';
 import { Grid } from 'grid/model/grid.class';
-import { RandomPositionsProvider } from 'grid/model/random-positions-provider.class';
+import { RandomPositionsProvider } from 'grid/model/position-provider/random-positions-provider.class';
 import { Subject } from 'rxjs/Subject';
 
 const initialPositions = [
