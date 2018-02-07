@@ -1,3 +1,4 @@
+import { GridSandbox } from './grid.sandbox';
 import { GliderProvider } from './model/position-provider/glider-provider.class';
 import { RandomPositionsProvider } from './model/position-provider/random-positions-provider.class';
 import { MaxInterfaceComponent } from 'grid/max-interface/max-interface.component';
@@ -15,6 +16,6 @@ import { RangeToArrayPipe } from 'grid/range-to-array.pipe';
   declarations: [
     RangeToArrayPipe, GridComponent, CellComponent, MaxInterfaceComponent
   ],
-  providers: [RandomPositionsProvider, GliderProvider]
+  providers: [RandomPositionsProvider, GliderProvider, GridSandbox]
 })
 export class GridModule { }

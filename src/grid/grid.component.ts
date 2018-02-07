@@ -1,3 +1,4 @@
+import { GridSandbox } from './grid.sandbox';
 import { IPositionProvider } from './model/position-provider/i-position-provider.interface';
 import { GPosition } from './model/position.type';
 import { Component, Input, AfterViewInit } from '@angular/core';
@@ -25,28 +26,20 @@ const initialPositions = [
 export class GridComponent implements AfterViewInit {
     private intervalMs = 50;
 
-    @Input() gridInitializer;
-
     private interv;
     grid: Grid;
 
-    ngAfterViewInit(): void {
-        if (this.gridInitializer) {
-            this.gridInitializer.subscribe(initializer => {
-                this.init(initializer);
-            });
-
+    constructor(private gridSb: GridSandbox) {
+        gridSb.selectedInitializer$.subscribe((prov) => {
+            this.init(prov);
             this.runApp();
-        }
+        });
+    }
+
+    ngAfterViewInit(): void {
     }
 
     init(initializer: IPositionProvider) {
-        for (const prop in initializer) {
-            if (initializer.hasOwnProperty(prop) && this.hasOwnProperty(prop)) {
-                this[prop] = initializer[prop];
-            }
-        }
-
         if (initializer) {
             this.grid = initializer.createGrid();
         }

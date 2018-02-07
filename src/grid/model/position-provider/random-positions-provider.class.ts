@@ -14,8 +14,8 @@ export class RandomPositionsProvider implements IPositionProvider {
     }
 
     constructor() {
-        this.maxX = 80;
-        this.maxY = 80;
+        this.maxX = 30;
+        this.maxY = 30;
         this.density = 1 / 6;
     }
 
