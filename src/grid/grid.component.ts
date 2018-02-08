@@ -17,7 +17,7 @@ const initialPositions = [
     template: `<div *ngIf="grid">
                     <tr *ngFor="let cellRow of grid.cells">
                         <td *ngFor="let cell of cellRow">
-                                <app-cell [cell]="cell"></app-cell>
+                            <app-cell [cell]="cell"></app-cell>
                         </td>
                     </tr>
                 </div>`,
