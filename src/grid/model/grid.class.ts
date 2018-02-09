@@ -68,7 +68,7 @@ export class Grid {
     }
 
     private getCellsOnlyToCheckForNextTurn() {
-        // only alive cells and it's neighbors are to check.
+        // only alive celkls and it's neighbors are to check.
         // dead cell with only dead neighbors will nevet get a state change
         let result = [];
         const allProcess = [];
