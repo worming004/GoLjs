@@ -31,6 +31,7 @@ export class GridComponent implements AfterViewInit {
 
     constructor(private gridSb: GridSandbox) {
         gridSb.selectedInitializer$.subscribe((prov) => {
+            this.stopApp();
             this.init(prov);
             this.runApp();
         });
