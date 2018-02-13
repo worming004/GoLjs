@@ -1,13 +1,10 @@
 import { GPosition } from 'grid/model/position.type';
 import { IPositionProvider } from './i-position-provider.interface';
 import { Grid } from 'grid/model/grid.class';
-export class GliderProvider implements IPositionProvider {
-    private maxX: number;
-    private maxY: number;
-
+import { AGridProvider } from 'grid/model/position-provider/a-grid-provider.abstract';
+export class GliderProvider extends AGridProvider {
     constructor() {
-        this.maxX = 30;
-        this.maxY = 30;
+        super();
     }
 
     get Title() {
@@ -23,7 +20,6 @@ export class GliderProvider implements IPositionProvider {
         ]);
     }
     createGrid(): Grid {
-        const g = new Grid(this.maxX, this.maxY, this.getPositions());
-        return g;
+        return new Grid(this.maxX, this.maxY, this.getPositions());
     }
 }

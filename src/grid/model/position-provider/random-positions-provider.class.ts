@@ -1,12 +1,11 @@
+import { AGridProvider } from 'grid/model/position-provider/a-grid-provider.abstract';
 import { IPositionProvider } from './i-position-provider.interface';
 import { GPosition } from 'grid/model/position.type';
 import { Injectable } from '@angular/core';
 import { Grid } from 'grid/model/grid.class';
 
 @Injectable()
-export class RandomPositionsProvider implements IPositionProvider {
-    private maxX: number;
-    private maxY: number;
+export class RandomPositionsProvider extends AGridProvider {
     private density: number;
 
     get Title() {
@@ -14,14 +13,12 @@ export class RandomPositionsProvider implements IPositionProvider {
     }
 
     constructor() {
-        this.maxX = 30;
-        this.maxY = 30;
+        super();
         this.density = 1 / 6;
     }
 
     createGrid(): Grid {
-        const g = new Grid(this.maxX, this.maxY, this.getPositions());
-        return g;
+        return new Grid(this.maxX, this.maxY, this.getPositions());
     }
 
     getPositions(): GPosition[] {
