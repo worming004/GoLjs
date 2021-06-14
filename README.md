@@ -1,3 +1,7 @@
+# Archived
+
+This repository was created for fun and discovering angular2+ some year ago. I do not plan to update it at all.
+
 # GoLjs
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
